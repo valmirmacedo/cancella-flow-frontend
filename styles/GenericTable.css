@@ -1,0 +1,455 @@
+.table-container {
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0; /* Remove padding para maximizar espaço */
+}
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto; /* permite scroll horizontal quando a tabela for mais larga */
+  overflow-y: visible;
+  flex: 1; /* Permite que a área de rolagem cresça */
+  min-height: 400px; /* Altura mínima (será removida no modo compacto) */
+  -webkit-overflow-scrolling: touch; /* Scroll suave em iOS */
+}
+
+.generic-table {
+  width: 100%;
+  /* Remover min-width rígido; usamos min-width baseado em colgroup/col quando necessário */
+  min-width: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed; /* evita que conteúdo longo estoure para outras colunas */
+}
+
+/* Quando uma linha estiver em edição, permitir que a tabela expanda para caber inputs maiores */
+.table-container.editing-active .generic-table {
+  table-layout: auto; /* permitir que colunas cresçam conforme conteúdo */
+  min-width: 0; /* permitir encaixe natural; overflow-x mostrará scroll se necessário */
+}
+
+.table-container.editing-active .table-scroll {
+  overflow-x: auto; /* garantir scroll horizontal se necessário */
+}
+
+/* Cabeçalhos da tabela - modificado para evitar truncamento */
+.generic-table th {
+  background: #2abb98;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 1rem;
+  text-align: left;
+  vertical-align: middle;
+  position: relative; /* Para posicionamento do tooltip se necessário */
+}
+
+/* Conteúdo do cabeçalho - modificado para permitir quebra de linha */
+.header-content {
+  width: 100%;
+  /* Permitir que cabeçalhos quebrem em colunas estreitas */
+  hyphens: none;
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.2; /* Consistência visual */
+}
+
+/* Opcional: em telas menores, permitir quebra sem hifenização */
+@media screen and (max-width: 640px) {
+  .header-content {
+    white-space: normal; /* pode quebrar em telas pequenas */
+    hyphens: none;       /* ainda sem hifenização */
+    overflow-wrap: anywhere; /* quebra onde for preciso sem adicionar hífen */
+  }
+}
+
+/* Células da tabela - modificado para permitir quebra de texto */
+.generic-table td {
+  padding: 1rem 1.25rem; /* aumentar padding para mais espaço entre colunas */
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  vertical-align: middle;
+  max-width: 100%;
+}
+
+/* ====== Modo compacto (uso em modais) ====== */
+.table-container.compact-table {
+  margin-bottom: 0; /* sem espaço extra para caber com o footer fixo */
+  box-shadow: none; /* modal já tem sombra */
+  display: flex;
+  flex-direction: column; /* header/pager e scroll alinhados em coluna */
+}
+.table-container.compact-table .table-scroll {
+  min-height: 0; /* remove altura mínima que criava espaços */
+  max-height: none;
+  overflow-y: auto; /* rolar aqui quando estiver dentro da modal */
+}
+.table-container.compact-table .generic-table th {
+  padding: 0.5rem 0.6rem; /* cabeçalho ainda mais baixo */
+}
+.table-container.compact-table .generic-table td {
+  padding: 0.5rem 0.6rem; /* linhas ainda mais baixas */
+}
+.table-container.compact-table .actions-column .edit-button,
+.table-container.compact-table .actions-column .save-button,
+.table-container.compact-table .actions-column .cancel-button {
+  width: 28px;
+  height: 28px;
+}
+
+/* Conteúdo da célula - modificado para evitar quebra de linha em e-mails e telefones */
+.cell-content {
+  width: 100%;
+  overflow: hidden; /* esconde excesso para evitar sobreposição */
+  text-overflow: ellipsis; /* reticências por padrão */
+  white-space: normal; /* permitir quebra de linha quando necessário */
+}
+
+/* Para a coluna de endereço, permitir quebra de linha controlada */
+.generic-table td[data-column="endereco_completo"] .cell-content {
+  white-space: normal; /* pode quebrar linha */
+  overflow: hidden; /* ainda evita estourar a célula */
+}
+
+/* Quando a célula está em edição, liberar layout para inputs */
+.generic-table td.editing {
+  overflow: visible;
+  position: relative;
+  max-width: none; /* Remove limitação de largura máxima em edição */
+  min-width: 300px; /* Mais espaço para inputs em edição */
+}
+
+/* Endereço em edição: permitir quebra e tamanhos confortáveis */
+.generic-table td[data-column="endereco_completo"].editing {
+  min-width: 520px; /* espaço confortável para CEP + Número + Complemento */
+}
+
+.address-edit {
+  display: flex;
+  flex-wrap: nowrap; /* manter na mesma linha quando possível */
+  gap: 6px;
+  align-items: center;
+}
+
+.address-edit .cep-input {
+  width: 120px;
+}
+
+.address-edit .numero-input {
+  width: 80px;
+}
+
+.address-edit .complemento-input {
+  min-width: 220px;
+  flex: 1;
+}
+/* Tornar inputs de endereço compactos e não estourarem a célula */
+.generic-table td.editing .address-edit .edit-input { width: auto !important; min-width: 0 !important; }
+.generic-table td.editing .address-edit .cep-input { width: 110px !important; }
+.generic-table td.editing .address-edit .numero-input { width: 70px !important; }
+.generic-table td.editing .address-edit .complemento-input { min-width: 160px !important; flex: 1 1 auto; }
+
+/* Evitar que Endereço "invada" a coluna seguinte quando em edição */
+.generic-table td[data-column="endereco_completo"].editing { overflow: hidden; }
+
+/* Compactar inputs de CNPJ e Telefone no modo edição */
+/* As regras globais definem min-width:220px para inputs em edição; aqui sobrescrevemos para CNPJ/Telefone */
+.generic-table td[data-column="cnpj"].editing .edit-input { width: 180px !important; min-width: 0 !important; }
+.generic-table td[data-column="telefone"].editing .edit-input { width: 140px !important; min-width: 0 !important; }
+
+.generic-table td.editing .cell-content {
+  white-space: normal;
+  overflow: visible;
+  min-width: 100%;
+  width: auto;
+}
+
+
+
+.generic-table td.editing .edit-input,
+.generic-table td.editing input[type="text"],
+.generic-table td.editing input[type="email"],
+.generic-table td.editing select,
+.generic-table td.editing textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-width: 260px; /* aumentar min width para evitar cortes */
+  padding: 0.9rem; /* um pouco mais espaçado */
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.98rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.generic-table td.editing .edit-input:focus,
+.generic-table td.editing input[type="text"]:focus,
+.generic-table td.editing input[type="email"]:focus,
+.generic-table td.editing select:focus,
+.generic-table td.editing textarea:focus {
+  outline: none;
+  border-color: #2abb98;
+  box-shadow: 0 0 0 3px rgba(42, 187, 152, 0.1);
+}
+
+.generic-table td.editing textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+/* React-Select dentro da célula */
+.generic-table td.editing .edit-select,
+.generic-table td.editing .unidade-select-edit,
+.generic-table td.editing .react-select-container {
+  width: 100%;
+  min-width: 250px;
+}
+
+.generic-table td.editing .select__control,
+.generic-table td.editing .react-select__control {
+  min-height: 36px;
+  min-width: 250px;
+  border-color: #cbd5e1;
+  overflow: visible !important;
+}
+
+.generic-table td.editing .select__control--is-focused,
+.generic-table td.editing .react-select__control--is-focused {
+  border-color: #2abb98;
+  box-shadow: 0 0 0 2px rgba(42, 187, 152, 0.15);
+}
+
+.generic-table td.editing .select__menu,
+.generic-table td.editing .react-select__menu {
+  z-index: 9999;
+}
+
+.generic-table td.editing .react-select__single-value,
+.generic-table td.editing .select__single-value {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+
+.generic-table td.editing .react-select__value-container,
+.generic-table td.editing .select__value-container {
+  overflow: visible !important;
+}
+
+.generic-table td.editing .status-checkbox {
+  transform: scale(1.1);
+}
+
+/* Garantir que o ID seja exibido corretamente */
+.generic-table td[data-column="id"] .cell-content {
+  white-space: nowrap; /* Não quebrar ID */
+  font-weight: 500; /* Deixar em negrito para melhor visibilidade */
+}
+
+/* Estilo específico para primeira coluna (geralmente ID) */
+.generic-table th:first-child,
+.generic-table td:first-child {
+  min-width: 60px; /* Largura mínima para garantir que o ID seja visível */
+}
+
+/* Configurações específicas para as colunas de ação */
+.generic-table th:last-child,
+.generic-table td:last-child {
+  text-align: center; /* Centraliza o conteúdo da última coluna (ações) */
+  width: 100px; /* Largura fixa para coluna de ações */
+  min-width: 100px;
+}
+
+.actions-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit-button,
+.save-button,
+.cancel-button {
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+}
+
+.edit-button {
+  color: #2abb98;
+}
+
+.edit-button:hover {
+  background: rgba(25, 41, 74, 0.1);
+  transform: scale(1.05);
+}
+
+.save-button {
+  color: #10b981;
+}
+
+.save-button:hover {
+  background: rgba(16, 185, 129, 0.1);
+  transform: scale(1.05);
+}
+
+.cancel-button {
+  color: #ef4444;
+}
+
+.cancel-button:hover {
+  background: rgba(239, 68, 68, 0.1);
+  transform: scale(1.05);
+}
+
+.edit-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* Versão compacta para inputs em células com pouco espaço */
+.compact-edit-input {
+  padding: 0.4rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.edit-input:focus {
+  outline: none;
+  border-color: #2abb98;
+  box-shadow: 0 0 0 2px rgba(42, 187, 152, 0.15);
+}
+
+.pagination {
+  padding: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e2e8f0;
+}
+
+.pagination-info {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pagination-controls button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Classe especial para tabelas de largura total */
+.full-width-table {
+  width: 100%;
+  max-width: 100%;
+}
+
+.full-width-table .generic-table {
+  width: 100%;
+  /* Quando usamos full-width-table, deixamos a tabela livre para definir uma min-width
+     baseada no conteúdo das colunas para provocar scroll horizontal quando necessário. */
+  min-width: 1100px; /* fallback razoável para desktops */
+  table-layout: auto; /* permite colunas crescerem conforme conteúdo */
+}
+
+/* Utilitário para forçar a barra de rolagem horizontal quando necessário
+   aplicar nas páginas que precisam do comportamento, ex: className="full-width-table allow-horizontal-scroll" */
+.allow-horizontal-scroll .table-scroll {
+  overflow-x: auto !important;
+}
+
+.allow-horizontal-scroll .generic-table {
+  min-width: 900px; /* valor menor aceitável; colunas específicas podem sobrescrever */
+  table-layout: auto;
+}
+
+/* Ajustes para garantir consistência em diferentes resolucões */
+@media screen and (max-width: 1200px) {
+  .generic-table th,
+  .generic-table td {
+    padding: 0.75rem 0.5rem; /* Reduz padding para telas menores */
+  }
+}
+
+/* Garantir que mesmo com colunas menores, o conteúdo seja sempre visível */
+.generic-table th, 
+.generic-table td {
+  overflow: visible; /* Evita cortar o conteúdo */
+  min-width: 50px; /* Largura mínima para qualquer coluna */
+}
+
+/* Larguras mínimas específicas por tipo de coluna */
+.generic-table td[data-column="full_name"],
+.generic-table td[data-column="email"] {
+  min-width: 200px;
+}
+
+.generic-table td[data-column="cpf"],
+.generic-table td[data-column="phone"] {
+  min-width: 150px;
+}
+
+.generic-table td[data-column="condominio_id"],
+.generic-table td[data-column="unidade_identificacao"] {
+  min-width: 220px;
+}
+
+/* Larguras específicas para tabela de encomendas (portaria) */
+.generic-table td[data-column="destinatario_nome"],
+.generic-table td[data-column="descricao"] {
+  min-width: 240px;
+}
+.generic-table td[data-column="codigo_rastreio"],
+.generic-table td[data-column="retirado_por"],
+.generic-table td[data-column="retirado_em"],
+.generic-table td[data-column="created_on"] {
+  min-width: 180px;
+}
+
+/* Destacar células de rodapé para melhor legibilidade */
+.generic-table tfoot th,
+.generic-table tfoot td {
+  background-color: #f8fafc;
+  font-weight: 600;
+}

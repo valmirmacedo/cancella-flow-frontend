@@ -1,0 +1,267 @@
+/* Página principal */
+.morador-page {
+  min-height: 100vh;
+  padding-top: 64px;
+  background: #f8fafc;
+}
+
+/* Container principal */
+.morador-content {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  flex-grow: 1;
+  min-height: calc(100vh - 64px);
+  padding-top: 1rem;
+}
+
+/* Container de abas */
+.tabs-container {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0;
+}
+
+.tab {
+  padding: 0.875rem 1.75rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  bottom: -2px;
+}
+
+.tab:hover {
+  color: #2abb98;
+  background: rgba(42, 187, 152, 0.05);
+}
+
+.tab.active {
+  color: #2abb98;
+  border-bottom-color: #2abb98;
+  font-weight: 600;
+}
+
+/* Seção de filtros */
+.filters-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.actions-group {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  position: relative;
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background-color: #2abb98;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.add-button:hover {
+  background-color: #239b82;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(42, 187, 152, 0.3);
+}
+
+.add-button:active {
+  transform: translateY(0);
+}
+
+.search-box {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #2abb98;
+  box-shadow: 0 0 0 3px rgba(42, 187, 152, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.dropdown-wrapper {
+  position: relative;
+}
+
+.status-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.actions-column {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.edit-button,
+.save-button,
+.cancel-button,
+.delete-button {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+}
+
+.edit-button {
+  background: #3b82f6;
+  color: white;
+}
+
+.edit-button:hover {
+  background: #2563eb;
+}
+
+.save-button {
+  background: #10b981;
+  color: white;
+}
+
+.save-button:hover {
+  background: #059669;
+}
+
+.cancel-button {
+  background: #ef4444;
+  color: white;
+}
+
+.cancel-button:hover {
+  background: #dc2626;
+}
+
+.delete-button {
+  background: #f59e0b;
+  color: white;
+}
+
+.delete-button:hover {
+  background: #d97706;
+}
+
+.status-active,
+.status-inactive {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.status-active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.empty-state {
+  background: white;
+  border-radius: 12px;
+  padding: 4rem 2rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state p {
+  color: #64748b;
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .morador-content {
+    padding: 1rem;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .tab {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .filters-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  .actions-group {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .add-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

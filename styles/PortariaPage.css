@@ -1,0 +1,376 @@
+/* Página principal */
+.portaria-page {
+  min-height: 100vh;
+  padding-top: 64px !important;
+  background: #f8fafc;
+}
+
+/* Container principal com largura fixa e centralizado */
+.portaria-content {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  flex-grow: 1;
+  min-height: calc(100vh - 64px);
+}
+
+/* Adicionar espaço entre o topo e as abas */
+.portaria-content .tabs-container {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Tabs */
+.tabs-container {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0;
+}
+
+.tab {
+  padding: 0.875rem 1.75rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  bottom: -2px;
+}
+
+.tab:hover {
+  color: #2abb98;
+  background: rgba(42, 187, 152, 0.05);
+}
+
+.tab.active {
+  color: #2abb98;
+  border-bottom-color: #2abb98;
+  font-weight: 600;
+}
+
+/* Seção de filtros - estrutura page-header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.dropdown-wrapper {
+  position: relative;
+}
+
+.search-container {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2abb98;
+  box-shadow: 0 0 0 3px rgba(42, 187, 152, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+/* Manter compatibilidade com código antigo */
+.filters-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #2abb98;
+  box-shadow: 0 0 0 3px rgba(42, 187, 152, 0.1);
+}
+
+.actions-group {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  position: relative;
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background-color: #2abb98;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.add-button:hover {
+  background-color: #239b82;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(42, 187, 152, 0.3);
+}
+
+.add-button:active {
+  transform: translateY(0);
+}
+
+/* Wrapper com scroll para tabelas */
+.table-container-with-scroll {
+  width: 100%;
+  overflow-x: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Status styles */
+.status-active {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-block;
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-inactive {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-block;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  color: #64748b;
+}
+
+.action-button:hover {
+  background-color: #f1f5f9;
+}
+
+.edit-button {
+  color: #3b82f6;
+}
+
+.edit-button:hover {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.save-button {
+  color: #10b981;
+}
+
+.save-button:hover {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+.cancel-button {
+  color: #ef4444;
+}
+
+.cancel-button:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.delete-button {
+  color: #f59e0b;
+}
+
+.delete-button:hover {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #64748b;
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  font-size: 0.95rem;
+  color: #94a3b8;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .portaria-content {
+    padding: 1rem;
+    padding-top: 0.5rem;
+  }
+
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab {
+    flex-shrink: 0;
+    min-width: auto;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .page-header,
+  .filters-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-actions {
+    width: 100%;
+  }
+
+  .search-container,
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .actions-group {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .add-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Tabelas com scroll horizontal em mobile */
+  .table-container-with-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  .portaria-content {
+    padding: 0.5rem;
+  }
+
+  .tabs {
+    gap: 0.25rem;
+  }
+
+  .tab {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .empty-state {
+    padding: 3rem 1rem;
+  }
+
+  .empty-state-icon {
+    font-size: 3rem;
+  }
+
+  .add-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}

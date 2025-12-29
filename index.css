@@ -1,0 +1,61 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .header, .footer {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .button:hover {
+    background-color: #45a049;
+  }
+
+/* Global status styles - padroniza cores do sistema (Ativo = verde, Inativo = vermelho) */
+.status-active {
+  color: #059669 !important; /* verde */
+  font-weight: 600;
+}
+
+.status-inactive {
+  color: #dc2626 !important; /* vermelho */
+  font-weight: 600;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-badge.active {
+  background: #dcfce7; /* leve verde de fundo */
+  color: #036b2e;
+}
+
+.status-badge.inactive {
+  background: #fee2e2; /* leve vermelho de fundo */
+  color: #991b1b;
+}

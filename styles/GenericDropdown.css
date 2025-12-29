@@ -1,0 +1,519 @@
+/* Estilos para o dropdown genérico */
+
+/* Estilos para validação de campos */
+.form-field input.error {
+  border-color: #ef4444 !important;
+}
+
+.form-field input.valid {
+  border-color: #10b981 !important;
+}
+
+.form-field .error-message {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.dropdown-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 200000; /* acima de tabelas e selects */
+  /* permitir que elementos filhos com z-index maior sejam interativos */
+  pointer-events: auto;
+}
+
+.generic-dropdown {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 200101 !important; /* deve ficar acima do overlay */
+  padding: 1.25rem;
+  max-width: calc(100vw - 40px);
+  will-change: transform; /* Otimização para animações/movimentos */
+  position: fixed !important; /* sempre fixo */
+}
+
+/* Posicionamento relativo (tipo dropdown) */
+.dropdown-position-relative {
+  position: absolute;
+  box-shadow: 0 6px 16px -8px rgba(0,0,0,0.2), 
+              0 9px 28px 0 rgba(0,0,0,0.1), 
+              0 12px 48px 16px rgba(0,0,0,0.05);
+  /* O posicionamento exato será definido via JavaScript */
+}
+
+/* Usar !important para evitar que outros estilos sobrescrevam o posicionamento */
+.position-set {
+  transition: none !important;
+}
+
+/* Posicionamento centralizado */
+.dropdown-position-center {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+/* Posicionamento topo */
+.dropdown-position-top {
+  position: fixed !important;
+  top: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+/* Tamanhos do dropdown - aumentando o tamanho do 'large' */
+.dropdown-small {
+  width: 350px;
+}
+
+.dropdown-medium {
+  width: 450px;
+}
+
+.dropdown-large {
+  width: 540px; /* Era 600px, ajustamos para 540px para um aumento de ~20% sobre o medium */
+}
+
+/* Cabeçalho do dropdown - Ajustando espaçamento */
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem; /* Reduzido de 1.5rem para 1rem */
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #19294a;
+}
+
+.header-title h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #19294a;
+  font-weight: 600;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #19294a;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-button:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* Conteúdo do dropdown - Ajustando espaçamento */
+.dropdown-content {
+  width: 100%;
+  overflow-y: visible;
+  max-height: none;
+  padding-top: 0.35rem; /* Aumentado de 0.25rem para 0.35rem */
+  padding-bottom: 1rem; /* garantir espaço para botões */
+}
+
+/* Ajustes para garantir que todos os tipos de dropdowns usem o mesmo posicionamento */
+.add-type-dropdown.generic-dropdown,
+.add-status-dropdown.generic-dropdown,
+.add-user-dropdown.generic-dropdown,
+.add-profile-dropdown.generic-dropdown,
+.add-company-dropdown.generic-dropdown,
+.add-queue-dropdown.generic-dropdown,
+.add-team-dropdown.generic-dropdown {
+  /* Deixe o GenericDropdown (JS) controlar top/left; manter apenas fixo */
+  position: fixed !important;
+}
+
+/* Estilos para botões de formulário */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 1.5rem;
+}
+
+.button-primary {
+  background-color: #2abb98;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.button-primary:hover {
+  background-color: #239a80;
+}
+
+.button-primary:disabled {
+  background-color: #9dd5c5;
+  cursor: not-allowed;
+}
+
+.button-secondary {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.button-secondary:hover {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+/* Estilos para campos de formulário */
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 1rem;
+  align-items: baseline; /* Alinha os elementos pela linha de base do texto */
+  margin-top: 3px; /* Pequeno espaçamento adicional no topo da linha */
+}
+
+.form-field {
+  flex: 1;
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.form-field:first-child {
+  margin-top: 0;
+}
+
+/* Garantir que todas as alturas de input sejam consistentes */
+.form-field input, 
+.form-field select, 
+.form-field textarea {
+  width: 100%;
+  padding: 0.5rem;
+  padding-top: 0.6rem;
+  background: #f8f9fa;
+  border: 1px solid rgba(25, 41, 74, 0.2);
+  border-radius: 8px;
+  color: #19294a;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin-top: 2px; /* Pequena margem adicional no topo do input */
+  line-height: 1.2;
+}
+
+.form-field select {
+  height: 40px; /* Altura fixa para selects */
+}
+
+.form-field input {
+  height: 40px; /* Altura fixa para inputs */
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Ajustando o posicionamento consistente dos labels */
+.form-field label {
+  position: absolute;
+  top: -0.7rem;
+  left: 0.5rem;
+  background: white;
+  padding: 0 0.3rem;
+  font-size: 0.8rem;
+  color: #19294a;
+  z-index: 2;
+  line-height: 1;
+  height: auto;
+  margin-top: 3px; /* Ajuste para evitar corte pelo título */
+}
+
+/* Ajuste para react-select */
+.form-field .react-select-container {
+  margin-top: 0; /* Remover margem superior */
+}
+
+.form-field .react-select__input {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.form-field .react-select__control {
+  min-height: 40px; /* Mesma altura que os inputs normais */
+  height: 40px; /* Altura fixa */
+}
+
+/* Configuração para garantir alinhamento vertical nos selects */
+.form-field.select-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Ajustar comportamento de React Select para alinhamento correto */
+.form-field .react-select__value-container {
+  height: 38px; /* Um pouco menos que a altura do controle para acomodar as bordas */
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.error-message {
+  color: #e11d48;
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+.input-error {
+  border-color: #e11d48 !important;
+}
+
+.input-valid {
+  border-color: #10b981 !important;
+}
+
+/* Assegurar que o dropdown seja exibido corretamente */
+.generic-dropdown.dropdown-position-relative {
+  transition: none !important;
+  position: fixed !important; /* manter fixo na viewport; top/left definidos via JS */
+}
+
+/* Quando usamos position="relative" com trigger, posicionamos abaixo do botão via inline JS (top/left). 
+   O container continua fixo para não descer com a tela. */
+.
+  z-index: 1050 !important;
+}
+
+/* Estilos para estados de carregamento e erro no Select */
+.loading-teams, 
+.teams-error, 
+.no-teams-message {
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.loading-teams {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #2563eb;
+  text-align: center;
+}
+
+.teams-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+.no-teams-message {
+  color: #475569;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Estilos para autocomplete multi-user (chips) */
+.multi-user-input {
+  width: 100%;
+  min-height: 40px;
+  background: #f8f9fa;
+  border: 1px solid rgba(111, 15, 175, 0.2);
+  border-radius: 8px;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.multi-user-input.focused {
+  box-shadow: 0 0 0 3px rgba(25, 41, 74, 0.06);
+  border-color: #2abb98;
+}
+
+.multi-user-input .selected-chips {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+}
+
+.multi-user-input .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e6f7f2;
+  border: 1px solid #c8ebe2;
+  color: #19294a;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.multi-user-input .chip .chip-name {
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.multi-user-input .chip-remove {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  font-weight: 600;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.multi-user-input .user-search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 6px 4px;
+  min-width: 120px;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.user-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 6px 16px rgba(2,6,23,0.1);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 2050;
+  border-radius: 8px;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+}
+
+.user-suggestions li {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.user-suggestions li:hover {
+  background: #f1f5f9;
+}
+
+/* Garantir que inputs dentro do multi-user respeitem altura */
+.multi-user-input .user-search-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+  .generic-dropdown {
+    max-width: calc(100vw - 20px);
+    padding: 1rem;
+    margin: 0 10px;
+  }
+
+  /* Para dropdowns relativos em mobile, ajustar para não sair da tela */
+  .dropdown-position-relative {
+    max-width: calc(100vw - 20px);
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    transform: none !important;
+  }
+
+  /* Para dropdowns centralizados em mobile */
+  .dropdown-position-center {
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 40px);
+    margin: 20px;
+    top: 20px !important;
+    left: 10px !important;
+    right: 10px !important;
+    transform: none !important;
+    width: auto !important;
+  }
+
+  .dropdown-header {
+    padding: 0.75rem 0;
+  }
+
+  .dropdown-title {
+    font-size: 1.1rem;
+  }
+
+  .form-field {
+    margin-bottom: 1rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .form-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .generic-dropdown {
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+
+  .dropdown-title {
+    font-size: 1rem;
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    font-size: 16px; /* Evita zoom no iOS */
+  }
+}
