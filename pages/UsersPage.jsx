@@ -132,6 +132,9 @@ function UsersPage() {
   const [espacosLoaded, setEspacosLoaded] = useState(false);
   const [logoFile, setLogoFile] = useState(null);
   const [logoPreviewEdit, setLogoPreviewEdit] = useState(null);
+  const [sindicosDisponiveis, setSindicosDisponiveis] = useState([]);
+  const [loadingSindicos, setLoadingSindicos] = useState(false);
+  const [originalSindicoId, setOriginalSindicoId] = useState(null);
 
   // Verificar se o usuário tem acesso a pelo menos uma aba
   const hasAccess = user?.is_staff || 
@@ -401,6 +404,25 @@ function UsersPage() {
   }, [activeTab]);
 
   useEffect(() => {
+    const loadSindicos = async () => {
+      if (activeTab !== 'condominios') return;
+      setLoadingSindicos(true);
+      try {
+        const response = await api.get('/access/users/?type=sindicos&page_size=500');
+        const sindicos = response.data.results || response.data || [];
+        setSindicosDisponiveis(sindicos);
+      } catch (error) {
+        console.error('Erro ao carregar síndicos:', error);
+        setSindicosDisponiveis([]);
+      } finally {
+        setLoadingSindicos(false);
+      }
+    };
+
+    loadSindicos();
+  }, [activeTab]);
+
+  useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       fetchData(activeTab, currentPage, searchTerm);
     }, 500);
@@ -441,39 +463,45 @@ function UsersPage() {
       
       if (activeTab === 'condominios') {
         console.log("Calling condominioAPI.patch with:", { id, data });
-        
+
+        const selectedSindicoId = data?.sindico_id ?? null;
+
+        const condominioData = {
+          nome: data?.nome || '',
+          cep: data?.cep ? String(data.cep).replace(/\D/g, '') : '',
+          numero: data?.numero || '',
+          complemento: data?.complemento || '',
+          cnpj: data?.cnpj ? String(data.cnpj).replace(/\D/g, '') : '',
+          telefone: data?.telefone ? String(data.telefone).replace(/\D/g, '') : '',
+          is_ativo: Boolean(data?.is_ativo)
+        };
+
         // Se houver arquivo de logo, atualizamos os campos via PATCH (sem arquivo)
         // e depois enviamos o arquivo para o endpoint DB (/logo-db/upload/)
         if (logoFile) {
-          const condominioData = {
-            ...data,
-            cep: data.cep ? data.cep.replace(/\D/g, '') : '',
-            is_ativo: Boolean(data.is_ativo)
-          };
-
-          // Atualiza dados sem o arquivo para não gravar no FileField
           await condominioAPI.patch(id, condominioData);
 
-          // Agora envia só o arquivo para o endpoint DB
           const uploadForm = new FormData();
           uploadForm.append('logo', logoFile);
 
-          // Usamos a instância 'api' direta para enviar ao caminho customizado
           await api.post(`/cadastros/condominios/${id}/logo-db/upload/`, uploadForm);
 
           // Limpar states de logo após salvar
           setLogoFile(null);
           setLogoPreviewEdit(null);
         } else {
-          // Sem arquivo de logo, enviar JSON normal
-          const condominioData = {
-            ...data,
-            cep: data.cep ? data.cep.replace(/\D/g, '') : '',
-            is_ativo: Boolean(data.is_ativo)
-          };
           const response = await condominioAPI.patch(id, condominioData);
           console.log("Response from API:", response);
         }
+
+        // Reatribuir síndico se houver alteração ou nova seleção
+        if (originalSindicoId && originalSindicoId !== selectedSindicoId) {
+          await api.patch(`/access/profile/${originalSindicoId}/`, { condominio_id: null });
+        }
+        if (selectedSindicoId) {
+          await api.patch(`/access/profile/${selectedSindicoId}/`, { condominio_id: id });
+        }
+        setOriginalSindicoId(selectedSindicoId ?? null);
       } else if (activeTab === 'sindicos') {
         // Validar CPF e telefone (opcionais, mas se preenchidos, precisam ser válidos)
         const cpfDigitsS = (data.cpf || '').replace(/\D/g, '');
@@ -571,11 +599,25 @@ function UsersPage() {
     }
   };
 
-  const handleEditRow = (rowId) => {
+  const handleEditRow = async (rowId) => {
     setEditingRowId(rowId);
     // Limpar logo preview ao iniciar edição de nova linha
     setLogoFile(null);
     setLogoPreviewEdit(null);
+
+    if (activeTab === 'condominios' && rowId) {
+      try {
+        const response = await condominioAPI.get(rowId);
+        const detalhes = response.data || {};
+        setCurrentEditData(detalhes);
+        setOriginalSindicoId(detalhes.sindico_id || null);
+      } catch (error) {
+        console.error('Erro ao carregar detalhes do condomínio:', error);
+        setOriginalSindicoId(null);
+      }
+    } else {
+      setOriginalSindicoId(null);
+    }
   };
 
   const handleLogoChangeEdit = (e) => {
@@ -1743,7 +1785,41 @@ function UsersPage() {
       key: 'sindico_nome',
       header: 'Síndico',
       width: '180px',
-      render: (value, row) => value || row?.sindico?.full_name || row?.sindico?.nome || row?.sindico_name || '-'
+      editable: true,
+      render: (value, row) => value || row?.sindico?.full_name || row?.sindico?.nome || row?.sindico_name || '-',
+      editComponent: (editData, handleInputChange) => {
+        const selectedId = editData?.sindico_id ?? editData?.sindico?.id ?? null;
+        const options = sindicosDisponiveis.map(s => ({
+          value: s.id,
+          label: s.full_name || s.username || `Usuário ${s.id}`
+        }));
+
+        return (
+          <Select
+            className="edit-select"
+            classNamePrefix="select"
+            isLoading={loadingSindicos}
+            options={options}
+            value={options.find(opt => opt.value === selectedId) || null}
+            onChange={(opt) => handleInputChange('sindico_id', opt ? opt.value : null)}
+            placeholder="Selecione um síndico"
+            isClearable
+            menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
+            styles={{
+              container: (base) => ({ ...base, width: '100%' }),
+              menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+              control: (base, state) => ({
+                ...base,
+                minHeight: 36,
+                borderColor: state.isFocused ? '#2abb98' : '#cbd5e1',
+                boxShadow: state.isFocused ? '0 0 0 2px rgba(42, 187, 152, 0.15)' : 'none',
+              }),
+              valueContainer: (base) => ({ ...base, padding: '2px 8px' }),
+              placeholder: (base) => ({ ...base, color: '#94a3b8' }),
+            }}
+          />
+        );
+      }
     },
     {
       key: 'is_ativo',
@@ -2430,11 +2506,15 @@ function UsersPage() {
               setEditingRowId(null);
               setLogoFile(null);
               setLogoPreviewEdit(null);
+              setCurrentEditData({});
+              setOriginalSindicoId(null);
             }}
             className="full-width-table allow-horizontal-scroll"
             editingRowId={editingRowId}
             onEditRow={handleEditRow}
             onEditDataChange={setCurrentEditData}
+            currentEditData={currentEditData}
+            titleColumnKey={activeTab === 'condominios' ? 'nome' : undefined}
           />
         )}
 

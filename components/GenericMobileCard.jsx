@@ -16,7 +16,8 @@ function GenericMobileCard({
   className = '',
   onEditDataChange,
   onEditChange,
-  currentEditData
+  currentEditData,
+  titleColumnKey
 }) {
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({});
@@ -317,10 +318,25 @@ function GenericMobileCard({
       {data.map((row) => {
         const isEditingRow = (editingId === row.id) || (editingRowId === row.id);
         
-        // Obter primeira coluna (que não seja actions) para o cabeçalho
-        const firstColumn = columns.find(col => col.key !== 'actions');
-        const firstColumnValue = firstColumn ? (row[firstColumn.key] ?? '-') : row.id;
-        const firstColumnLabel = firstColumn ? (firstColumn.header || firstColumn.label) : 'ID';
+        // Escolher a coluna usada como título do card (permite sobrescrever via prop)
+        const titleColumn = titleColumnKey
+          ? columns.find(col => col.key === titleColumnKey)
+          : columns.find(col => col.key !== 'actions');
+
+        let titleValue = '-';
+        if (titleColumn) {
+          const rawValue = titleColumn.render
+            ? titleColumn.render(row[titleColumn.key], row)
+            : row[titleColumn.key];
+          // Evitar elementos React no cabeçalho; preferir texto simples
+          if (React.isValidElement(rawValue)) {
+            titleValue = row[titleColumn.key] ?? '-';
+          } else {
+            titleValue = rawValue ?? '-';
+          }
+        }
+        const titleLabel = titleColumn?.header || titleColumn?.label || 'ID';
+        const headerText = titleColumnKey ? titleValue : `${titleLabel}: ${titleValue}`;
         
         // NO MOBILE: Não renderizar ações customizadas, apenas o botão padrão "Editar"
         // Isso evita duplicação de botões de editar com ícones
@@ -331,7 +347,7 @@ function GenericMobileCard({
             {/* Cabeçalho do card */}
             <div className="mobile-card-header">
               <div className="card-title">
-                {firstColumnLabel}: {firstColumnValue}
+                {headerText}
               </div>
             </div>
 
