@@ -1,0 +1,496 @@
+/* Container principal dos cards mobile */
+.mobile-cards-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Card individual */
+.mobile-card {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Cabeçalho do card */
+.mobile-card-header {
+  background: linear-gradient(135deg, #2abb98 0%, #1a9a7a 100%);
+  color: white;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  flex: 1;
+  text-align: center;
+}
+
+/* Conteúdo do card */
+.mobile-card-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  flex: 1;
+  overflow-y: auto;
+  max-height: none;
+}
+
+/* Campo individual */
+.mobile-card-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.mobile-card-field:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.field-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.field-value {
+  font-size: 0.95rem;
+  color: #1e293b;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+/* Campo em modo de edição */
+.mobile-card-field.editing {
+  background: #f8fafc;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 2px solid #2abb98;
+}
+
+.mobile-card-field.editing .field-label {
+  color: #2abb98;
+}
+
+/* Inputs de edição mobile */
+.mobile-edit-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: white;
+  box-sizing: border-box;
+  max-height: 44px;
+}
+
+.mobile-edit-input:focus {
+  outline: none;
+  border-color: #2abb98;
+  box-shadow: 0 0 0 3px rgba(42, 187, 152, 0.1);
+}
+
+/* React-Select em mobile */
+.mobile-card-field.editing .react-select-container,
+.mobile-card-field.editing .edit-select,
+.mobile-card-field.editing .unidade-select-edit {
+  width: 100%;
+}
+
+.mobile-card-field.editing .react-select__control,
+.mobile-card-field.editing .select__control {
+  min-height: 44px;
+  max-height: 44px;
+  border-color: #cbd5e1;
+  font-size: 0.95rem;
+}
+
+.mobile-card-field.editing .react-select__control--is-focused,
+.mobile-card-field.editing .select__control--is-focused {
+  border-color: #2abb98;
+  box-shadow: 0 0 0 3px rgba(42, 187, 152, 0.1);
+}
+
+.mobile-card-field.editing .react-select__menu,
+.mobile-card-field.editing .select__menu {
+  z-index: 9999;
+  font-size: 0.95rem;
+}
+
+/* Textarea em mobile */
+.mobile-card-field.editing textarea {
+  min-height: 80px;
+  max-height: 200px;
+  resize: vertical;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mobile-card-field.editing textarea:focus {
+  outline: none;
+  border-color: #2abb98;
+  box-shadow: 0 0 0 3px rgba(42, 187, 152, 0.1);
+}
+
+/* Checkbox em mobile */
+.mobile-card-field.editing input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  accent-color: #2abb98;
+}
+
+/* Edição de endereço em mobile */
+.mobile-card-field.editing .address-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.mobile-card-field.editing .address-edit input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  max-height: 44px;
+}
+
+.mobile-card-field.editing .address-edit input:focus {
+  outline: none;
+  border-color: #2abb98;
+  box-shadow: 0 0 0 3px rgba(42, 187, 152, 0.1);
+}
+
+/* Ações do card */
+.mobile-card-actions {
+  padding: 0.875rem 1rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mobile-action-button {
+  flex: 1;
+  min-width: 110px;
+  padding: 0.75rem 1rem !important;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  width: auto !important;
+  height: auto !important;
+}
+
+.mobile-action-button:active {
+  transform: scale(0.98);
+}
+
+.mobile-card-actions .edit-button,
+.mobile-card-actions .mobile-action-button.edit-button {
+  background: #2abb98 !important;
+  color: white !important;
+  padding: 0.75rem 1rem !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.mobile-card-actions .edit-button:hover,
+.mobile-card-actions .mobile-action-button.edit-button:hover {
+  background: #1a9a7a !important;
+  box-shadow: 0 3px 8px rgba(42, 187, 152, 0.3);
+  transform: translateY(-1px);
+}
+
+.mobile-card-actions .save-button,
+.mobile-card-actions .mobile-action-button.save-button {
+  background: #10b981 !important;
+  color: white !important;
+  padding: 0.75rem 1rem !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.mobile-card-actions .save-button:hover,
+.mobile-card-actions .mobile-action-button.save-button:hover {
+  background: #059669 !important;
+  box-shadow: 0 3px 8px rgba(16, 185, 129, 0.3);
+  transform: translateY(-1px);
+}
+
+.mobile-card-actions .cancel-button,
+.mobile-card-actions .mobile-action-button.cancel-button {
+  background: #ef4444 !important;
+  color: white !important;
+  padding: 0.75rem 1rem !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.mobile-card-actions .cancel-button:hover,
+.mobile-card-actions .mobile-action-button.cancel-button:hover {
+  background: #dc2626 !important;
+  box-shadow: 0 3px 8px rgba(239, 68, 68, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Garantir que todos os botões dentro de mobile-card-actions tenham altura consistente */
+.mobile-card-actions > button,
+.mobile-card-actions .mobile-action-button {
+  min-height: 40px;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+}
+
+/* IMPORTANTE: Ocultar completamente qualquer SVG/ícone dentro dos botões mobile */
+.mobile-card-actions svg,
+.mobile-card-actions button svg,
+.mobile-card-actions .mobile-action-button svg,
+.mobile-card-actions .edit-button svg,
+.mobile-card-actions .save-button svg,
+.mobile-card-actions .cancel-button svg {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+}
+
+/* Garantir que o texto dos botões seja sempre visível */
+.mobile-card-actions button {
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* Paginação mobile */
+.mobile-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-top: 0.5rem;
+}
+
+.page-button {
+  flex: 1;
+  max-width: 120px;
+  padding: 0.75rem 1rem;
+  background: #2abb98;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.page-button:hover:not(:disabled) {
+  background: #1a9a7a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(42, 187, 152, 0.3);
+}
+
+.page-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.page-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: #cbd5e1;
+}
+
+.page-indicator {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+/* Estados de loading e vazio */
+.loading-text,
+.empty-text {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+/* FORÇA BRUTA: Remover TODOS os ícones, pseudo-elementos e SVGs dos botões mobile */
+.mobile-cards-container svg,
+.mobile-cards-container button svg,
+.mobile-cards-container .mobile-action-button svg,
+.mobile-cards-container .mobile-card-actions svg {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+
+/* Remover pseudo-elementos que possam estar adicionando ícones */
+.mobile-cards-container button::before,
+.mobile-cards-container button::after,
+.mobile-cards-container .mobile-action-button::before,
+.mobile-cards-container .mobile-action-button::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Otimizações para telas muito pequenas */
+@media screen and (max-width: 360px) {
+  .mobile-cards-container {
+    padding: 0.5rem;
+  }
+
+  .mobile-card-header {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.8rem;
+  }
+
+  .mobile-card-content {
+    padding: 0.875rem;
+  }
+
+  .mobile-action-button,
+  .page-button {
+    font-size: 0.85rem;
+    padding: 0.625rem 0.875rem;
+  }
+}
+
+/* Landscape em mobile - sem necessidade de ajuste de altura máxima */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  .mobile-card-content {
+    max-height: none;
+  }
+}
+
+/* Melhorias de acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-card,
+  .mobile-action-button,
+  .nav-button,
+  .page-button {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Dark mode (preparado para futura implementação) */
+@media (prefers-color-scheme: dark) {
+  .mobile-cards-container {
+    background: #0f172a;
+  }
+
+  .mobile-card {
+    background: #1e293b;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .mobile-card-content {
+    color: #e2e8f0;
+  }
+
+  .field-label {
+    color: #94a3b8;
+  }
+
+  .field-value {
+    color: #e2e8f0;
+  }
+
+  .mobile-card-field {
+    border-bottom-color: #334155;
+  }
+
+  .mobile-card-field.editing {
+    background: #0f172a;
+    border-color: #2abb98;
+  }
+
+  .mobile-edit-input,
+  .mobile-card-field.editing textarea {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-color: #475569;
+  }
+
+  .mobile-card-actions {
+    background: #0f172a;
+    border-top-color: #334155;
+  }
+
+  .nav-button {
+    background: #1e293b;
+    border-color: #2abb98;
+  }
+
+  .loading-text,
+  .empty-text {
+    color: #94a3b8;
+  }
+}

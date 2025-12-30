@@ -2099,6 +2099,16 @@ function UsersPage() {
               ]}
               data={tableData.espacos}
               loading={loading}
+              onSave={async (rowId, updatedData) => {
+                try {
+                  console.log('[UsersPage] Salvando espaço:', { rowId, updatedData });
+                  await espacoAPI.patch(rowId, updatedData);
+                  await fetchData('espacos', currentPage, searchTerm);
+                } catch (error) {
+                  console.error('Erro ao salvar espaço:', error);
+                  alert('Erro ao salvar espaço: ' + (error.response?.data?.detail || error.message));
+                }
+              }}
               onPageChange={(page) => setCurrentPage(page)}
               totalPages={totalPages.espacos}
               currentPage={currentPage}
@@ -2195,6 +2205,16 @@ function UsersPage() {
             ]}
             data={tableData.reservas}
             loading={loading}
+            onSave={async (rowId, updatedData) => {
+              try {
+                console.log('[UsersPage] Salvando reserva:', { rowId, updatedData });
+                await espacoReservaAPI.patch(rowId, updatedData);
+                await fetchData('reservas', currentPage, searchTerm);
+              } catch (error) {
+                console.error('Erro ao salvar reserva:', error);
+                alert('Erro ao salvar reserva: ' + (error.response?.data?.detail || error.message));
+              }
+            }}
             onPageChange={(page) => setCurrentPage(page)}
             totalPages={totalPages.reservas}
             currentPage={currentPage}

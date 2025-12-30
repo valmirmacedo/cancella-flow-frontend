@@ -2,10 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 import Select from 'react-select';
 import '../styles/GenericTable.css';
+import GenericMobileCard from './GenericMobileCard';
 
 function GenericTable({ columns, data, loading, onSave, onEdit, onCancel, onPageChange, totalPages, currentPage, editingRowId, onEditRow, className = '', teams, onEditDataChange, onEditChange, currentEditData }) {
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar se está em mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Quando o controle de edição vem de fora (editingRowId), sincronizar o editData com a linha correspondente
   useEffect(() => {
@@ -143,6 +157,29 @@ function GenericTable({ columns, data, loading, onSave, onEdit, onCancel, onPage
     // Valor padrão quando não há dado
     return row[column.key] ?? '-';
   };
+
+  // Se está em mobile, renderizar componente de cards
+  if (isMobile) {
+    return (
+      <GenericMobileCard
+        columns={columns}
+        data={data}
+        loading={loading}
+        onSave={onSave}
+        onEdit={onEdit}
+        onCancel={onCancel}
+        onPageChange={onPageChange}
+        totalPages={totalPages}
+        currentPage={currentPage}
+        editingRowId={editingRowId}
+        onEditRow={onEditRow}
+        className={className}
+        onEditDataChange={onEditDataChange}
+        onEditChange={onEditChange}
+        currentEditData={currentEditData}
+      />
+    );
+  }
 
   return (
     <div className={`table-container ${className} ${(editingId || editingRowId) ? 'editing-active' : ''}`}>

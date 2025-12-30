@@ -278,47 +278,50 @@
   gap: 0.5rem;
 }
 
-.edit-button,
-.save-button,
-.cancel-button {
-  padding: 0.5rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-}
+/* Estilos de botões apenas para desktop (não interferir no mobile) */
+@media screen and (min-width: 769px) {
+  .edit-button,
+  .save-button,
+  .cancel-button {
+    padding: 0.5rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+  }
 
-.edit-button {
-  color: #2abb98;
-}
+  .edit-button {
+    color: #2abb98;
+  }
 
-.edit-button:hover {
-  background: rgba(25, 41, 74, 0.1);
-  transform: scale(1.05);
-}
+  .edit-button:hover {
+    background: rgba(25, 41, 74, 0.1);
+    transform: scale(1.05);
+  }
 
-.save-button {
-  color: #10b981;
-}
+  .save-button {
+    color: #10b981;
+  }
 
-.save-button:hover {
-  background: rgba(16, 185, 129, 0.1);
-  transform: scale(1.05);
-}
+  .save-button:hover {
+    background: rgba(16, 185, 129, 0.1);
+    transform: scale(1.05);
+  }
 
-.cancel-button {
-  color: #ef4444;
-}
+  .cancel-button {
+    color: #ef4444;
+  }
 
-.cancel-button:hover {
-  background: rgba(239, 68, 68, 0.1);
-  transform: scale(1.05);
+  .cancel-button:hover {
+    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.05);
+  }
 }
 
 .edit-input {
