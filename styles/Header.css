@@ -171,10 +171,15 @@
   overflow: auto; /* permite rolar quando o conteúdo é grande */
   z-index: 1000;
   max-height: min(70vh, 520px); /* limita a altura em telas pequenas */
-  margin-top: 0.5rem;
+  margin-top: 0; /* remove gap entre trigger e menu para evitar perder o hover ao mover o mouse */
 }
 
 .app-menu-item.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Permite que o menu seja mostrado também quando o item tem a classe .open (controle via JS) */
+.app-menu-item.dropdown.open .dropdown-menu {
   display: block;
 }
 

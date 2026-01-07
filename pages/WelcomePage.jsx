@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Header from '../components/Header/Header';
 import '../styles/WelcomePage.css';
@@ -30,6 +30,7 @@ import {
 
 function WelcomePage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [avisosHome, setAvisosHome] = useState([]);
   const [moradorStats, setMoradorStats] = useState(null);
   const [sindicoStats, setSindicoStats] = useState(null);
