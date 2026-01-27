@@ -11,6 +11,13 @@ import PasswordResetModal from './PasswordResetModal';
 import GenericDropdown from '../common/GenericDropdown';
 
 function AddUserDropdown({ onClose, onSuccess, triggerRef, userType = 'funcionario' }) {
+  const labelMap = {
+    sindico: 'Síndico',
+    funcionario: 'Funcionário',
+    morador: 'Morador',
+    portaria: 'Porteiro'
+  };
+  const displayLabel = labelMap[userType] || 'Usuário';
   const { user: currentUser } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
@@ -218,7 +225,7 @@ function AddUserDropdown({ onClose, onSuccess, triggerRef, userType = 'funcionar
     <>
       {showDropdown && (
         <GenericDropdown
-          title={`Novo ${userType === 'sindico' ? 'Síndico' : userType === 'funcionario' ? 'Funcionário' : 'Morador'}`}
+          title={`Novo ${displayLabel}`}
           onClose={onClose}
           icon={<FaUserPlus size={18} />}
           className="add-user-dropdown"
@@ -416,7 +423,7 @@ function AddUserDropdown({ onClose, onSuccess, triggerRef, userType = 'funcionar
                 className="button-primary"
                 disabled={emailIsValid === false || cpfIsValid === false || phoneIsValid === false}
               >
-                <FaSave /> Criar {userType === 'sindico' ? 'Síndico' : userType === 'funcionario' ? 'Funcionário' : 'Morador'}
+                <FaSave /> Criar {displayLabel}
               </button>
             </div>
           </form>
